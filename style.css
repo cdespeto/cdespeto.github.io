@@ -1,0 +1,136 @@
+/* 1. CONFIGURAÇÕES GLOBAIS E CAMADAS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #0a0a0a; /* Fundo preto profundo e limpo */
+    color: #ffffff;
+    overflow-x: hidden;
+    position: relative;
+    /* Brilho radial central suave (efeito calor da brasa) */
+    background-image: radial-gradient(circle at center, #3a0d00 0%, #0a0a0a 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+.fumaca-fundo { z-index: 1; }
+header, main { z-index: 2; position: relative; }
+
+/* 2. O EFEITO DE FUMAÇA */
+.fumaca-fundo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/png;base64,...'); /* Aqui fica a sua imagem, não mude */
+    background-repeat: repeat;
+    background-size: 300px;
+    opacity: 0.25; 
+    
+    /* Aceleramos de 60s para 15s para você ver o efeito claramente */
+    animation: moverFumaca 15s linear infinite; 
+}
+
+/* O navegador precisa EXATAMENTE deste bloco para saber como mover a imagem */
+@keyframes moverFumaca {
+    from { background-position: 0 0; }
+    to { background-position: 1000px 1000px; }
+}
+
+/* 3. CABEÇALHO */
+header {
+    text-align: center;
+    padding: 30px 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-bottom: 3px solid #ff4500;
+}
+
+header h1 {
+    font-size: 28px;
+    margin-top: 15px;
+    color: #ff4500;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+/* 4. PRODUTOS (A CAIXA E A FOTO) */
+.cardapio-container {
+    padding: 20px;
+    display: grid; /* Ativa o sistema de grade */
+    grid-template-columns: 1fr 1fr; /* Cria 2 colunas de tamanhos iguais */
+    gap: 15px; /* Espaço (margem) entre um espetinho e outro */
+    max-width: 800px; /* Limita a largura máxima para não ficar gigante no computador */
+    margin: 0 auto; /* Centraliza a grade na tela inteira */
+}
+
+/* 2. PREPARANDO A IMAGEM PARA O ZOOM */
+.produto-card {
+    position: relative; 
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid #ff4500;
+    cursor: pointer;
+    background-color: #1a1a1a; /* Fundo escuro para a parte do texto básico */
+    display: flex;
+    flex-direction: column;
+}
+
+/* NOVO: Estilo da parte que fica sempre visível */
+.info-basica {
+    padding: 10px;
+    text-align: center;
+}
+
+.info-basica h3 {
+    font-size: 16px;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.info-basica small {
+    font-size: 12px;
+    color: #ff4500; /* Laranja brasa para chamar a atenção */
+    font-weight: bold;
+}
+
+/* O texto escondido agora precisa cobrir a caixa TODA, e ter z-index para ficar por cima de tudo */
+.detalhes-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9); /* Fundo um pouco mais escuro para ler bem os ingredientes */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
+    z-index: 10; /* Garante que os ingredientes fiquem na frente da foto e do nome básico */
+    
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out;
+}
+.produto-card img {
+    width: 100%;
+    display: block;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    transition: transform 0.4s ease; /* A mágica da transição suave */
+}
+
+/* 2. O efeito de ZOOM quando a caixa recebe o clique (foco) */
+.produto-card:focus img {
+    transform: scale(1.15); /* Aumenta a foto em 15% */
+}
+
+/* 3. Faz a camada preta com informações aparecer no clique (foco) */
+.produto-card:focus .detalhes-overlay {
+    opacity: 1; /* Muda a transparência de invisível para visível */
+}
