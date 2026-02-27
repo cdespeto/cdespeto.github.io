@@ -7,13 +7,15 @@
 }
 
 body {
-    background-color: #0a0a0a; /* Fundo preto profundo e limpo */
+    /* Usando a sua foto de madeira como fundo oficial */
+    background-image: url('fundo.jpeg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* A madeira fica parada ao rolar */
+    background-color: #0a0a0a;
     color: #ffffff;
+    margin: 0;
     overflow-x: hidden;
-    position: relative;
-    /* Brilho radial central suave (efeito calor da brasa) */
-    background-image: radial-gradient(circle at center, #3a0d00 0%, #0a0a0a 100%);
-    background-attachment: fixed;
     min-height: 100vh;
 }
 
@@ -100,22 +102,74 @@ header h1 {
 
 /* O texto escondido agora precisa cobrir a caixa TODA, e ter z-index para ficar por cima de tudo */
 .detalhes-overlay {
-    position: absolute;
+    position: absolute; /* OBRIGATÓRIO: Faz o texto flutuar por cima da foto */
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.9); /* Fundo um pouco mais escuro para ler bem os ingredientes */
+    
+    opacity: 0; /* OBRIGATÓRIO: Mantém o texto invisível no começo */
+    transition: opacity 0.3s ease-in-out; 
+    
+    background: rgba(0, 0, 0, 0.85);
+    border: 2px solid #ff4500;
+    border-radius: 10px;
+    padding: 30px 15px 15px 15px; 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; 
+    overflow-y: auto; 
     align-items: center;
-    text-align: center;
-    padding: 15px;
-    z-index: 10; /* Garante que os ingredientes fiquem na frente da foto e do nome básico */
-    
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out;
+    z-index: 10;
+}
+
+.detalhes-overlay ul {
+    list-style: none; /* Esconde a bolinha branca normal */
+    padding: 0; /* Remove o recuo padrão para a direita */
+    margin: 15px 0; /* Dá um espaço em cima e embaixo da lista */
+    text-align: left; /* Mantém os itens alinhados organizados */
+}
+
+/* 2. Estilo de cada ingrediente */
+.detalhes-overlay li {
+    font-size: 15px;
+    color: #ffffff;
+    line-height: 1.6;
+    margin-bottom: 5px; /* Espaço entre as linhas */
+}
+
+/* 3. A mágica: Criando nosso marcador personalizado! */
+.detalhes-overlay li::before {
+    content: "🔥"; /* Símbolo da bolinha (Você pode até trocar por "🔥" se quiser!) */
+    color: #ff4500; /* Pinta a bolinha da cor laranja da sua marca */
+    font-size: 18px; /* Deixa a bolinha um pouco maior */
+    margin-right: 8px; /* Dá um espacinho entre a bolinha e a palavra */
+}
+
+/* Novo Estilo do Título (Título Maior e Laranja) */
+.detalhes-overlay h3 {
+    font-size: 20px;
+    color: #ff4500;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+/* Novo Estilo dos Ingredientes (Lista Organizada) */
+.detalhes-overlay p {
+    font-size: 14px;
+    color: #ffffff;
+    line-height: 1.6;
+    text-align: left; /* Alinha o texto à esquerda para a lista */
+}
+
+/* Adiciona um ponto laranja brasa antes de cada ingrediente */
+.detalhes-overlay p::before {
+    content: "•";
+    color: #ff4500;
+    margin-right: 8px;
+    font-weight: bold;
 }
 .produto-card img {
     width: 100%;
@@ -125,12 +179,33 @@ header h1 {
     transition: transform 0.4s ease; /* A mágica da transição suave */
 }
 
-/* 2. O efeito de ZOOM quando a caixa recebe o clique (foco) */
-.produto-card:focus img {
-    transform: scale(1.15); /* Aumenta a foto em 15% */
+.produto-card:focus {
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+    /* A MUDANÇA: Reduzi o scale para 1.05 para não estourar a tela */
+    transform: translate(-50%, -50%) scale(1.05); 
+    z-index: 1000; 
+    width: 85%;
+    /* A MUDANÇA: Deixei mais estreito (de 350px para 300px) */
+    max-width: 300px; 
+    box-shadow: 0 0 0 100vmax rgba(0,0,0,0.85); 
 }
 
-/* 3. Faz a camada preta com informações aparecer no clique (foco) */
+/* Evita que a foto cresça desproporcionalmente dentro do card que já cresceu */
+.produto-card:focus img {
+    transform: none; 
+}
+
+/* 3. O Visual Bonito e os 3 Segundos de espera */
 .produto-card:focus .detalhes-overlay {
-    opacity: 1; /* Muda a transparência de invisível para visível */
+    opacity: 1; /* Torna os ingredientes visíveis */
+    
+    /* A mágica do tempo: transição de 0.5s, ESPERANDO 3s para começar */
+    transition: opacity 0.5s ease-in-out 0.5s; 
+    
+    /* Deixando o visual "bem bonito" como você pediu */
+    background: rgba(0, 0, 0, 0.85); /* Fundo escuro para leitura */
+    border: 2px solid #ff4500; /* Borda cor de brasa para destacar */
+    border-radius: 10px; /* Cantos arredondados na camada de texto */
 }
