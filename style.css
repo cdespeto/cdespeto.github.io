@@ -33,9 +33,10 @@ header, main { z-index: 2; position: relative; }
     background-repeat: repeat;
     background-size: 300px;
     opacity: 0.25; 
-    
-    /* Aceleramos de 60s para 15s para você ver o efeito claramente */
     animation: moverFumaca 15s linear infinite; 
+    
+    /* A MÁGICA PARA O CELULAR ROLAR LISO: */
+    pointer-events: none; /* Ignora o toque do dedo e deixa ele rolar a página por trás */
 }
 
 /* O navegador precisa EXATAMENTE deste bloco para saber como mover a imagem */
