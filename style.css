@@ -8,7 +8,7 @@
 
 body {
     /* Usando a sua foto de madeira como fundo oficial */
-    background-image: url('fundo.jpeg'); 
+    background-image: url('Imagens/madeira4.jpeg'); 
     background-size: cover;
     background-position: center;
     background-attachment: fixed; /* A madeira fica parada ao rolar */
@@ -48,7 +48,10 @@ header, main { z-index: 2; position: relative; }
 header {
     text-align: center;
     padding: 30px 20px;
-    background-color: rgba(0, 0, 0, 0.8);
+    
+    /* MUDANÇA AQUI: */
+    background-color: rgba(0, 0, 0, 0.4); /* 0.4 deixa a madeira aparecer bem no fundo */
+    
     border-bottom: 3px solid #ff4500;
 }
 
@@ -145,6 +148,11 @@ header h1 {
     font-size: 18px; /* Deixa a bolinha um pouco maior */
     margin-right: 8px; /* Dá um espacinho entre a bolinha e a palavra */
 }
+.card-bebida .detalhes-overlay li::before {
+    content: "🥤";
+}
+.card-bebida .detalhes-overlay li.item-cerveja::before {
+    content: "🍺";}
 
 /* Novo Estilo do Título (Título Maior e Laranja) */
 .detalhes-overlay h3 {
